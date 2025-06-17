@@ -1,8 +1,8 @@
 [
   {
-    "question": "Ποια είναι η λύση της εξίσωσης \\(2x + 3 = 7\\);",
-    "options": ["1", "2", "3", "4"],
-    "correctAnswer": 1,
-    "explanation": "Λύση: \\(2x = 4\\) ⇒ \\(x = 2\\)"
+    "question": "Ερώτηση 1;",
+    "options": ["Απάντηση 1", "Απάντηση 2"],
+    "correctAnswer": 0,
+    "explanation": "Εξήγηση"
   }
 ]
