@@ -1,26 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Οι ερωτήσεις του quiz
-    let questions = []; // Άδειος πίνακας που θα γεμίσει με fetch
-
-async function loadQuestions() {
-  try {
-    const response = await fetch('questions.json');
-    if (!response.ok) {
-      throw new Error('Το JSON δεν φορτώθηκε σωστά');
-    }
-    questions = await response.json();
-    initQuiz(); // Ξεκινά το quiz μόλις φορτωθούν οι ερωτήσεις
-  } catch (error) {
-    console.error('Σφάλμα φόρτωσης:', error);
-    // Εμφάνιση μηνύματος λάθους στον χρήστη
-    document.querySelector('.question-container').innerHTML = `
-      <div class="error">
-        <p>Δεν μπόρεσαν να φορτωθούν οι ερωτήσεις. Παρακαλώ δοκιμάστε ξανά.</p>
-        <button onclick="location.reload()">Ανανέωση</button>
-      </div>
-    `;
-  }
-}
+    // Μεταβλητές κατάστασης
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let userAnswers = [];
+    let score = 0;
+    let timeLeft = 60;
+    let timer;
+    let quizCompleted = false;
 
 // Καλέστε αυτή τη συνάρτηση αντί του initQuiz() όταν φορτώνεται η σελίδα
 loadQuestions();
@@ -42,21 +28,37 @@ loadQuestions();
     const resultsDiv = document.querySelector('.results');
     const timeSpan = document.getElementById('time');
 
-    // Αρχικοποίηση quiz
-    function initQuiz() {
-        shuffleQuestions();
-        showQuestion();
-        startTimer();
+   // 1. Φόρτωση ερωτήσεων από JSON
+    async function loadQuestions() {
+        try {
+            const response = await fetch('questions.json');
+            if (!response.ok) throw new Error('Πρόβλημα φόρτωσης JSON');
+            questions = await response.json();
+            shuffleQuestions();  // Ανακάτεμα μετά τη φόρτωση
+            initQuiz();
+        } catch (error) {
+            console.error('Σφάλμα:', error);
+            questionContainer.innerHTML = `
+                <div class="error">
+                    <p>Δεν μπόρεσαν να φορτωθούν οι ερωτήσεις.</p>
+                    <button onclick="location.reload()">Ανανέωση</button>
+                </div>
+            `;
+        }
     }
 
-    // Ανακάτεμα ερωτήσεων
+    // 2. Ανακάτεμα ερωτήσεων (Fisher-Yates shuffle)
     function shuffleQuestions() {
         for (let i = questions.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [questions[i], questions[j]] = [questions[j], questions[i]];
         }
     }
-
+  // 3. Αρχικοποίηση quiz
+    function initQuiz() {
+        showQuestion();
+        startTimer();
+    }
     // Εμφάνιση ερώτησης
     function showQuestion() {
         const question = questions[currentQuestionIndex];
@@ -202,6 +204,6 @@ loadQuestions();
 
     submitBtn.addEventListener('click', endQuiz);
 
-    // Αρχικοποίηση quiz
-    initQuiz();
+    // Αρχική κλήση
+    loadQuestions();  // Ξεκινάει τη διαδικασία
 });
