@@ -12,7 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionContainer = document.querySelector('.question-container');
     const optionsContainer = document.querySelector('.options-container');
     const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+const nextBtn = document.getElementById('next-btn');
+
+if (!prevBtn || !nextBtn) {
+  console.error('Navigation buttons missing!');
+  return;
+}
     const submitBtn = document.getElementById('submit-btn');
     const resultsDiv = document.querySelector('.results');
     const timeSpan = document.getElementById('time');
