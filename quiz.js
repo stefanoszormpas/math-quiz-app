@@ -1,19 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Μεταβλητές κατάστασης
+    // Μεταβλητές κατάστασης (ΜΟΝΟ ΜΙΑ ΦΟΡΑ)
     let questions = [];
     let currentQuestionIndex = 0;
     let userAnswers = [];
-    let score = 0;
-    let timeLeft = 60;
-    let timer;
-    let quizCompleted = false;
-
-// Καλέστε αυτή τη συνάρτηση αντί του initQuiz() όταν φορτώνεται η σελίδα
-loadQuestions();
-
-    // Μεταβλητές κατάστασης
-    let currentQuestionIndex = 0;
-    let userAnswers = new Array(questions.length).fill(null);
     let score = 0;
     let timeLeft = 60;
     let timer;
@@ -28,13 +17,14 @@ loadQuestions();
     const resultsDiv = document.querySelector('.results');
     const timeSpan = document.getElementById('time');
 
-   // 1. Φόρτωση ερωτήσεων από JSON
+    // 1. Φόρτωση ερωτήσεων από JSON
     async function loadQuestions() {
         try {
             const response = await fetch('questions.json');
             if (!response.ok) throw new Error('Πρόβλημα φόρτωσης JSON');
             questions = await response.json();
-            shuffleQuestions();  // Ανακάτεμα μετά τη φόρτωση
+            userAnswers = new Array(questions.length).fill(null); // Δημιουργία πίνακα απαντήσεων
+            shuffleQuestions();
             initQuiz();
         } catch (error) {
             console.error('Σφάλμα:', error);
@@ -54,12 +44,14 @@ loadQuestions();
             [questions[i], questions[j]] = [questions[j], questions[i]];
         }
     }
-  // 3. Αρχικοποίηση quiz
+
+    // 3. Αρχικοποίηση quiz
     function initQuiz() {
         showQuestion();
         startTimer();
     }
-    // Εμφάνιση ερώτησης
+
+    // 4. Εμφάνιση ερώτησης
     function showQuestion() {
         const question = questions[currentQuestionIndex];
         questionContainer.innerHTML = `<div class="math-display">${question.question}</div>`;
@@ -83,16 +75,18 @@ loadQuestions();
         });
         
         updateNavigationButtons();
-        renderMath();
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
     }
 
-    // Επιλογή απάντησης
+    // 5. Επιλογή απάντησης
     function selectOption(optionIndex) {
         if (quizCompleted) return;
         
         userAnswers[currentQuestionIndex] = optionIndex;
-        
         const question = questions[currentQuestionIndex];
+        
         if (optionIndex === question.correctAnswer) {
             score++;
         }
@@ -100,7 +94,7 @@ loadQuestions();
         showQuestion();
     }
 
-    // Ενημέρωση κουμπιών navigation
+    // 6. Ενημέρωση πλοήγησης
     function updateNavigationButtons() {
         prevBtn.disabled = currentQuestionIndex === 0;
         
@@ -113,7 +107,7 @@ loadQuestions();
         }
     }
 
-    // Χρονόμετρο
+    // 7. Χρονόμετρο
     function startTimer() {
         timeSpan.textContent = timeLeft;
         timer = setInterval(() => {
@@ -127,64 +121,24 @@ loadQuestions();
         }, 1000);
     }
 
-    // Τερματισμός quiz
+    // 8. Τερματισμός
     function endQuiz() {
         quizCompleted = true;
         clearInterval(timer);
         
-        const options = document.querySelectorAll('.option');
-        options.forEach(option => {
+        // Απενεργοποίηση επιλογών
+        document.querySelectorAll('.option').forEach(option => {
             option.style.cursor = 'not-allowed';
         });
         
-        showResults();
-    }
-
-    // Εμφάνιση αποτελεσμάτων
-   function showResults() {
-    const resultsData = {
-        score: score,
-        totalQuestions: questions.length,
-        userAnswers: userAnswers,
-        questions: questions.map(q => ({
-            question: q.question,
-            options: q.options,
-            correctAnswer: q.correctAnswer,
-            explanation: q.explanation
-        }))
-    };
-
-    // Αποθήκευση στο sessionStorage
-    sessionStorage.setItem('quizResults', JSON.stringify(resultsData));
-    
-    // Ανακατεύθυνση στη σελίδα αποτελεσμάτων
-    window.location.href = 'results.html';
-}
-
-    // Επανεκκίνηση quiz
-    function restartQuiz() {
-        currentQuestionIndex = 0;
-        userAnswers = new Array(questions.length).fill(null);
-        score = 0;
-        timeLeft = 60;
-        quizCompleted = false;
-        
-        resultsDiv.style.display = 'none';
-        shuffleQuestions();
-        showQuestion();
-        clearInterval(timer);
-        startTimer();
-    }
-
-    // Εκ νέου απόδοση μαθηματικών τύπων
-    function renderMath() {
-        if (window.MathJax) {
-            MathJax.typesetPromise().catch(err => {
-                console.error('MathJax typesetting error:', err);
-                // Επανάληψη αν αποτύχει η πρώτη προσπάθεια
-                setTimeout(renderMath, 500);
-            });
-        }
+        // Αποθήκευση και ανακατεύθυνση
+        sessionStorage.setItem('quizResults', JSON.stringify({
+            score: score,
+            totalQuestions: questions.length,
+            userAnswers: userAnswers,
+            questions: questions
+        }));
+        window.location.href = 'results.html';
     }
 
     // Event listeners
@@ -204,6 +158,6 @@ loadQuestions();
 
     submitBtn.addEventListener('click', endQuiz);
 
-    // Αρχική κλήση
-    loadQuestions();  // Ξεκινάει τη διαδικασία
+    // Εκκίνηση
+    loadQuestions();
 });
