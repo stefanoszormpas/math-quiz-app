@@ -1,29 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Οι ερωτήσεις του quiz
-    const questions = [
-        {
-            question: "Ποια είναι η τιμή του \\( x \\) στην εξίσωση \\( 2x + 3 = 7 \\);",
-            options: [
-                "1",
-                "2",
-                "3",
-                "4"
-            ],
-            correctAnswer: 1,
-            explanation: "Λύση: \\( 2x + 3 = 7 \\) ⇒ \\( 2x = 7 - 3 \\) ⇒ \\( 2x = 4 \\) ⇒ \\( x = 2 \\)"
-        },
-        {
-            question: "Ποιο είναι το εμβαδόν ενός κύκλου με ακτίνα \\( r = 5 \\);",
-            options: [
-                "\\( 10\\pi \\)",
-                "\\( 25\\pi \\)",
-                "\\( 50\\pi \\)",
-                "\\( 100\\pi \\)"
-            ],
-            correctAnswer: 1,
-            explanation: "Ο τύπος για το εμβαδόν είναι \\( E = \\pi r^2 \\). Για \\( r = 5 \\), \\( E = \\pi \\times 5^2 = 25\\pi \\)"
-        }
-    ];
+    let questions = []; // Άδειος πίνακας που θα γεμίσει με fetch
+
+async function loadQuestions() {
+  try {
+    const response = await fetch('questions.json');
+    if (!response.ok) {
+      throw new Error('Το JSON δεν φορτώθηκε σωστά');
+    }
+    questions = await response.json();
+    initQuiz(); // Ξεκινά το quiz μόλις φορτωθούν οι ερωτήσεις
+  } catch (error) {
+    console.error('Σφάλμα φόρτωσης:', error);
+    // Εμφάνιση μηνύματος λάθους στον χρήστη
+    document.querySelector('.question-container').innerHTML = `
+      <div class="error">
+        <p>Δεν μπόρεσαν να φορτωθούν οι ερωτήσεις. Παρακαλώ δοκιμάστε ξανά.</p>
+        <button onclick="location.reload()">Ανανέωση</button>
+      </div>
+    `;
+  }
+}
+
+// Καλέστε αυτή τη συνάρτηση αντί του initQuiz() όταν φορτώνεται η σελίδα
+loadQuestions();
 
     // Μεταβλητές κατάστασης
     let currentQuestionIndex = 0;
