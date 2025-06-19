@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Μαθηματικά Quiz</title>
+    <title>Quiz</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="welcome-container">
-        <h1>Καλώς ήρθατε στα Μαθηματικά Quiz!</h1>
-        <div class="quiz-list">
-            <a href="quiz1.html" class="quiz-card">
-                <h2>Άλγεβρα</h2>
-                <p>5 ερωτήσεις για εξισώσεις</p>
-            </a>
-            <a href="quiz2.html" class="quiz-card">
-                <h2>Γεωμετρία</h2>
-                <p>5 ερωτήσεις για σχήματα</p>
-            </a>
+    <div class="quiz-container">
+        <div id="quiz-header">
+            <h2>Ερώτηση <span id="question-number"></span></h2>
+            <div class="progress-bar"><div id="progress"></div></div>
         </div>
+
+        <div id="question-container">
+            <p id="question-text"></p>
+            <div id="answers"></div>
+        </div>
+
+        <button id="next-btn">Επόμενη</button>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
+
