@@ -18,19 +18,18 @@ async function loadQuiz() {
     loadQuestion();
 }
 
+let totalTimeInSeconds = 1200; // 20 λεπτά
+
 function updateTimer() {
     const now = Date.now();
     const elapsed = Math.floor((now - startTime) / 1000);
-    const totalTime = 300; // π.χ. 5 λεπτά σε δευτερόλεπτα
+    const remaining = Math.max(0, totalTimeInSeconds - elapsed);
     
-    const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
-    const seconds = String(elapsed % 60).padStart(2, '0');
-    
-    const totalMinutes = String(Math.floor(totalTime / 60)).padStart(2, '0');
-    const totalSeconds = String(totalTime % 60).padStart(2, '0');
+    const minutes = String(Math.floor(remaining / 60)).padStart(2, '0');
+    const seconds = String(remaining % 60).padStart(2, '0');
     
     document.getElementById('timer').textContent = 
-        `Χρόνος: ${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
+        `Υπομένων χρόνος: ${minutes}:${seconds}`;
 }
 
 function loadQuestion() {
