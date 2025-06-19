@@ -1,60 +1,95 @@
-// Φόρτωση σκορ
-const score = localStorage.getItem('score') || 0;
-document.getElementById('score').textContent = score;
+let quizData = [];
+let currentQuestion = 0;
+let correctAnswers = 0;
+let userAnswers = [];
 
-// Φόρτωση χρόνου
-const time = localStorage.getItem('time');
-if (time) {
-    const minutes = String(Math.floor(time / 60)).padStart(2, '0');
-    const seconds = String(time % 60).padStart(2, '0');
-    document.getElementById('time').textContent = `Χρόνος ολοκλήρωσης: ${minutes}:${seconds}`;
+let startTime;
+let timerInterval;
+
+async function loadQuiz() {
+    const response = await fetch('questions.json');
+    quizData = await response.json();
+    document.getElementById('question-number').textContent = `${currentQuestion + 1} / ${quizData.length}`;
+    
+    // Ξεκινάμε το timer όταν φορτώσει το quiz
+    startTime = Date.now();
+    timerInterval = setInterval(updateTimer, 1000);
+
+    loadQuestion();
 }
 
-// Φόρτωση αποτελεσμάτων
-const resultsJSON = localStorage.getItem('results');
-let results = [];
-
-try {
-  results = resultsJSON ? JSON.parse(resultsJSON) : [];
-} catch(e) {
-  console.error('Σφάλμα στο parsing των αποτελεσμάτων:', e);
+function updateTimer() {
+    const now = Date.now();
+    const elapsed = Math.floor((now - startTime) / 1000);
+    const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const seconds = String(elapsed % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = `Χρόνος: ${minutes}:${seconds}`;
 }
 
-const container = document.getElementById('results');
-container.innerHTML = '';
+function loadQuestion() {
+    resetState();
+    const question = quizData[currentQuestion];
+    document.getElementById('question-text').innerHTML = question.question;
+    MathJax.typeset();
 
-results.forEach((item, idx) => {
-  const block = document.createElement('div');
-  block.classList.add('result-block');
+    question.options.forEach((option, index) => {
+        const btn = document.createElement('div');
+        btn.classList.add('answer');
+        btn.innerHTML = option.text;
+        btn.dataset.index = index;
+        btn.addEventListener('click', selectAnswer);
+        document.getElementById('answers').appendChild(btn);
+    });
 
-  let answerClass = '';
-  if (item.correct === true) {
-    answerClass = 'correct-answer';
-  } else if (item.correct === false) {
-    answerClass = 'wrong-answer';
-  }
+    document.getElementById('question-number').textContent = `${currentQuestion + 1} / ${quizData.length}`;
+    document.getElementById('progress').style.width = `${(currentQuestion) / quizData.length * 100}%`;
+    MathJax.typeset();
+}
 
-  block.innerHTML = `
-    <h3>Ερώτηση ${idx + 1}</h3>
-    <p>${item.question}</p>
-    <p><strong>Η απάντησή σου:</strong> <span class="${answerClass}">${item.selected}</span></p>
-    <p><strong>Επεξήγηση:</strong> ${item.explanation}</p>
-    <hr>
-  `;
+function resetState() {
+    document.getElementById('answers').innerHTML = '';
+    document.getElementById('next-btn').disabled = true;
+}
 
-  container.appendChild(block);
+function selectAnswer(e) {
+    const index = e.target.dataset.index;
+    const question = quizData[currentQuestion];
+    const selectedOption = question.options[index];
+
+    userAnswers.push({ 
+        question: question.question, 
+        selected: selectedOption.text, 
+        correct: selectedOption.correct,
+        explanation: selectedOption.explanation 
+    });
+
+    if (selectedOption.correct) {
+        e.target.classList.add('correct');
+        correctAnswers++;
+    } else {
+        e.target.classList.add('wrong');
+    }
+
+    document.querySelectorAll('.answer').forEach(btn => btn.removeEventListener('click', selectAnswer));
+    document.getElementById('next-btn').disabled = false;
+}
+
+document.getElementById('next-btn').addEventListener('click', () => {
+    currentQuestion++;
+    if (currentQuestion < quizData.length) {
+        loadQuestion();
+    } else {
+        finishQuiz();
+    }
 });
 
-// MathJax για τα μαθηματικά
-if(window.MathJax) {
-    MathJax.typesetPromise().catch(err => console.error(err));
+function finishQuiz() {
+    clearInterval(timerInterval);
+    const totalTime = Math.floor((Date.now() - startTime) / 1000);
+    localStorage.setItem('results', JSON.stringify(userAnswers));
+    localStorage.setItem('score', correctAnswers);
+    localStorage.setItem('time', totalTime);
+    window.location.href = 'results.html';
 }
 
-// Κουμπί επανάληψης quiz
-document.getElementById('retry').addEventListener('click', () => {
-    localStorage.removeItem('results');
-    localStorage.removeItem('score');
-    localStorage.removeItem('time');
-    window.location.href = 'index.html';  // ή το αρχείο του quiz
-});
-
+loadQuiz();
