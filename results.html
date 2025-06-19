@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Αποτελέσματα Quiz</title>
+    <title>Αποτελέσματα</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="quiz-container">
-        <h1>Αποτελέσματα</h1>
-        <div id="results-content"></div>
-        <button onclick="window.location.href='index.html'" class="restart-btn">Νέο Quiz</button>
+        <h2>Αποτελέσματα</h2>
+        <p>Σωστές απαντήσεις: <span id="score"></span></p>
+        <div id="results"></div>
     </div>
+
     <script src="results.js"></script>
 </body>
 </html>
