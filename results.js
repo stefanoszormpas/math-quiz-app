@@ -15,5 +15,13 @@ results.forEach((item, idx) => {
         <hr>
     `;
     container.appendChild(block);
-    MathJax.typeset();
 });
+
+// Καλούμε το MathJax **μόνο μια φορά** αφού προσθέσουμε όλα τα blocks
+if(window.MathJax) {
+    MathJax.typesetPromise()
+    .catch(function (err) {
+        console.error('MathJax typeset failed: ', err);
+    });
+}
+
