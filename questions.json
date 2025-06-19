@@ -1,18 +1,83 @@
 [
   {
-    "question": "Ποιο είναι το πιο άφθονο στοιχείο στο Σύμπαν;",
+    "question": "Να προσδιοριστεί το πεδίο ορισμού της συνάρτησης \\(f(x) = \\frac{1}{x-3}\\).",
     "options": [
-      { "text": "Οξυγόνο", "correct": false, "explanation": "Το Οξυγόνο είναι πολύ άφθονο αλλά όχι το πιο." },
-      { "text": "Υδρογόνο", "correct": true, "explanation": "Το Υδρογόνο αποτελεί περίπου το 74% της μάζας του σύμπαντος." },
-      { "text": "Άνθρακας", "correct": false, "explanation": "Ο Άνθρακας είναι πολύ σημαντικός αλλά λιγότερο άφθονος." }
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Δεν ορίζεται για \\(x=3\\)." },
+      { "text": "\\(\\mathbb{R} \\setminus \\{3\\}\\)", "correct": true, "explanation": "Η συνάρτηση δεν ορίζεται μόνο για \\(x=3\\)." },
+      { "text": "\\(\\mathbb{R} \\setminus \\{0\\}\\)", "correct": false, "explanation": "Το 0 δεν δημιουργεί πρόβλημα στο παρονομαστή." }
     ]
   },
   {
-    "question": "Πόσο είναι \\(\\int_0^1 x^2 dx\\);",
+    "question": "Να βρεθεί το πεδίο ορισμού της \\(f(x) = \\sqrt{x-2}\\).",
     "options": [
-      { "text": "0.5", "correct": false, "explanation": "Είναι το ολοκλήρωμα του \\(x\\), όχι του \\(x^2\\)." },
-      { "text": "1/3", "correct": true, "explanation": "Η σωστή απάντηση. \\(\\int x^2 dx = \\frac{x^3}{3}\\)." },
-      { "text": "1", "correct": false, "explanation": "Λάθος υπολογισμός." }
+      { "text": "\\([2, +\\infty)\\)", "correct": true, "explanation": "Η ρίζα ορίζεται για \\(x \\geq 2\\)." },
+      { "text": "\\((2, +\\infty)\\)", "correct": false, "explanation": "Περιλαμβάνει και το 2 αφού \\(\\sqrt{0} = 0\\)." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Η ρίζα δεν ορίζεται για \\(x<2\\)." }
+    ]
+  },
+  {
+    "question": "Το πεδίο ορισμού της \\(f(x) = \\ln(x+1)\\) είναι:",
+    "options": [
+      { "text": "\\((-1, +\\infty)\\)", "correct": true, "explanation": "Το \\(x+1>0 \\Rightarrow x > -1\\)." },
+      { "text": "\\((0, +\\infty)\\)", "correct": false, "explanation": "Αυτό ισχύει για \\(\\ln(x)\\), όχι για \\(\\ln(x+1)\\)." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Ο λογάριθμος ορίζεται μόνο για θετικά ορίσματα." }
+    ]
+  },
+  {
+    "question": "Να προσδιοριστεί το πεδίο τιμών της \\(f(x) = x^2\\).",
+    "options": [
+      { "text": "\\([0, +\\infty)\\)", "correct": true, "explanation": "Το τετράγωνο είναι πάντα \\(\\geq 0\\)." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Δεν παίρνει αρνητικές τιμές." },
+      { "text": "\\((-\\infty, 0]\\)", "correct": false, "explanation": "Δεν παίρνει καθόλου αρνητικές τιμές." }
+    ]
+  },
+  {
+    "question": "Το πεδίο τιμών της \\(f(x) = \\sin x\\) είναι:",
+    "options": [
+      { "text": "\\([-1, 1]\\)", "correct": true, "explanation": "Η ημιτονοειδής συνάρτηση παίρνει τιμές από -1 έως 1." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Δεν παίρνει όλες τις πραγματικές τιμές." },
+      { "text": "\\([0, 1]\\)", "correct": false, "explanation": "Κάνει και αρνητικές τιμές." }
+    ]
+  },
+  {
+    "question": "Το πεδίο ορισμού της \\(f(x) = \\frac{1}{x^2-4}\\) είναι:",
+    "options": [
+      { "text": "\\(\\mathbb{R} \\setminus \\{2, -2\\}\\)", "correct": true, "explanation": "Το \\(x^2-4=0\\) για \\(x=\\pm 2\\)." },
+      { "text": "\\(\\mathbb{R} \\setminus \\{0\\}\\)", "correct": false, "explanation": "Το 0 δεν μηδενίζει τον παρονομαστή." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Υπάρχουν σημεία που δεν ορίζεται." }
+    ]
+  },
+  {
+    "question": "Το πεδίο τιμών της \\(f(x) = \\sqrt{x}\\) είναι:",
+    "options": [
+      { "text": "\\([0, +\\infty)\\)", "correct": true, "explanation": "Η ρίζα δίνει μη αρνητικές τιμές." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Δεν δίνει αρνητικές τιμές." },
+      { "text": "\\((-\\infty, 0]\\)", "correct": false, "explanation": "Η ρίζα δεν είναι αρνητική." }
+    ]
+  },
+  {
+    "question": "Για τη \\(f(x) = \\frac{1}{\\sqrt{x-1}}\\), το πεδίο ορισμού είναι:",
+    "options": [
+      { "text": "\\((1, +\\infty)\\)", "correct": true, "explanation": "Το \\(x-1>0\\)." },
+      { "text": "\\([1, +\\infty)\\)", "correct": false, "explanation": "Η ρίζα του 0 δεν επιτρέπεται γιατί έχουμε παρονομαστή." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Υπάρχει περιορισμός λόγω παρονομαστή και ρίζας." }
+    ]
+  },
+  {
+    "question": "Ποιο είναι το πεδίο ορισμού της \\(f(x) = \\ln(3-x)\\);",
+    "options": [
+      { "text": "\\((-\\infty, 3)\\)", "correct": true, "explanation": "Πρέπει \\(3-x>0 \\Rightarrow x<3\\)." },
+      { "text": "\\((3, +\\infty)\\)", "correct": false, "explanation": "Ακριβώς το αντίθετο." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Ο λογάριθμος απαιτεί θετικό όρισμα." }
+    ]
+  },
+  {
+    "question": "Το πεδίο τιμών της \\(f(x) = \\frac{1}{x}\\) είναι:",
+    "options": [
+      { "text": "\\(\\mathbb{R} \\setminus \\{0\\}\\)", "correct": true, "explanation": "Η τιμή 0 δεν μπορεί να παραχθεί από το αντίστροφο." },
+      { "text": "\\(\\mathbb{R}\\)", "correct": false, "explanation": "Δεν παίρνει τιμή 0." },
+      { "text": "\\([0, +\\infty)\\)", "correct": false, "explanation": "Κάνει και αρνητικές τιμές." }
     ]
   }
 ]
+
