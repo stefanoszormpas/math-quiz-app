@@ -21,9 +21,16 @@ async function loadQuiz() {
 function updateTimer() {
     const now = Date.now();
     const elapsed = Math.floor((now - startTime) / 1000);
+    const totalTime = 300; // π.χ. 5 λεπτά σε δευτερόλεπτα
+    
     const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
     const seconds = String(elapsed % 60).padStart(2, '0');
-    document.getElementById('timer').textContent = `Χρόνος: ${minutes}:${seconds}`;
+    
+    const totalMinutes = String(Math.floor(totalTime / 60)).padStart(2, '0');
+    const totalSeconds = String(totalTime % 60).padStart(2, '0');
+    
+    document.getElementById('timer').textContent = 
+        `Χρόνος: ${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
 }
 
 function loadQuestion() {
